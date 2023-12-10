@@ -1,0 +1,15 @@
+/teste.py
+/termo_solver_teste.py
+/termo_method_tester.py
+/word_tester.py
+/palavras_invalidas.txt
+venv/
+/test_termo.py
+
+# Byte-compiled / optimized / DLL files
+_pycache_/
+*.py[cod]
+*$py.class
+
+# IDE files
+.idea
