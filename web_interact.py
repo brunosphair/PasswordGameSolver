@@ -8,8 +8,9 @@ class Web:
     def open_password_game(self):
         self.driver.get('https://neal.fun/password-game/')
 
-    def type_password(self, value):
-        self.driver.find_element(By.CLASS_NAME, 'ProseMirror').send_keys(value)
+    def type_password_in_index(self, value, index):
+        if index == -1:
+            self.driver.find_element(By.CLASS_NAME, 'ProseMirror').send_keys(value)
 
     def get_rule_to_be_solved(self):
         rule_class = 'rule-top'
