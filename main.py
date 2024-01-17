@@ -43,6 +43,12 @@ class InteractionsSolverWeb():
             password = self.solver.update_password_for_rule_4()
         elif rule_number == '5':
             password = self.solver.update_password_for_rule_5()
+        elif rule_number == '6':
+            password = self.solver.update_password_for_rule_6()
+        elif rule_number == '7':
+            password = self.solver.update_password_for_rule_7()
+        elif rule_number == '8':
+            password = self.solver.update_password_for_rule_8()
         elif rule_number == '10':
             captcha_value = self.web.get_captcha_value()
             password = self.solver.update_password_for_rule_10(captcha_value)
