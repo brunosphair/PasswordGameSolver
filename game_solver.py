@@ -82,12 +82,22 @@ class Solver:
             other_number = 25 - number_of_nines * 9 - current_int_sum_in_password
             new_password_dict['part'] = number_of_nines * '9' + str(other_number)
             new_password_dict['index'] = -1
+            new_password_dict['replace'] = False
         else:
+            new_password_dict['replace'] = True
             quantity_to_subtract = current_int_sum_in_password - 25
-            
+            int_index_to_modify = self.get_int_index_to_modify(self.password.current_password, self.password.character_status)
+            int_to_modify = int(self.password.current_password[int_index_to_modify])
+            diff = int_to_modify - quantity_to_subtract
+            if diff > 0:
+                new_password_dict['part'] = str(diff)
+                new_password_dict['index'] = int_index_to_modify
+            else:
+                new_password_dict['part'] = ""
+                new_password_dict['index'] = int_index_to_modify
+
         
         return new_password_dict
-
 
     def get_current_password_int_sum(self):
         sum = 0
@@ -96,6 +106,11 @@ class Solver:
                 sum += int(character)
         
         return sum
+    
+    def get_int_index_to_modify(self, password, character_status):
+        for index in range(len(password)):
+            if password[index].isdigit() and character_status[index] == 0:
+                return index
     
     def update_password_for_rule_6(self):
         new_password_part = self.get_random_month_of_year()
@@ -168,12 +183,18 @@ class Password:
         elif not replace:
             new_password = self.current_password[:index] + new_password_part + self.current_password[index:]
         else:
-            #TODO: precisa continuar a escrever o código para substituir trechos da senha a partir daqui
+            new_password = self.replace_string(self.current_password, new_password_part, index)
         status_len = len(new_password_part)
-        self.set_character_status(protected, index, status_len)
+        self.set_character_status(protected, index, status_len, replace)
         self.current_password = new_password
 
-    def set_character_status(self, protected, index, status_len):
+    def replace_string(self, original, replacer, index):
+        result = list(original)
+        result[index:index + len(replacer)] = replacer
+        
+        return ''.join(result)
+    
+    def set_character_status(self, protected, index, status_len, replace=False):
         if protected:
             protected_status = [1]
             status_to_insert = protected_status * status_len
@@ -182,5 +203,13 @@ class Password:
             status_to_insert = non_protected_status * status_len
         if index == -1:
             self.character_status.extend(status_to_insert)
-        else:
+        elif not replace:
             self.character_status[index: index] = status_to_insert
+        else:
+            self.character_status = self.character_status_replacer(self.character_status, status_to_insert, index)
+
+    def character_status_replacer(self, character_status, status_to_insert, index):
+        new_character_status = character_status
+        new_character_status[index:index + len(status_to_insert)] = status_to_insert
+
+        return new_character_status

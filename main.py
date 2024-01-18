@@ -30,7 +30,11 @@ class InteractionsSolverWeb():
             rule_to_be_solved = self.web.get_rule_to_be_solved()
             new_password = self.get_new_password_to_the_rule(rule_to_be_solved)
             
-            if new_password:
+            if new_password and 'replace' in new_password:
+                self.web.type_password_in_index(new_password['password'],
+                                                new_password['index'],
+                                                new_password['replace'])
+            elif new_password:
                 self.web.type_password_in_index(new_password['password'],
                                                 new_password['index'])
     

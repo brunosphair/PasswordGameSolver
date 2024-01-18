@@ -8,9 +8,11 @@ class Web:
     def open_password_game(self):
         self.driver.get('https://neal.fun/password-game/')
 
-    def type_password_in_index(self, value, index):
+    def type_password_in_index(self, value, index,replace=False):
         if index == -1:
             self.driver.find_element(By.CLASS_NAME, 'ProseMirror').send_keys(value)
+        elif not replace:
+            #TODO: escrever código para situações onde o index não é -1, situações com replace e sem replace
 
     def get_rule_to_be_solved(self):
         rule_class = 'rule-top'
