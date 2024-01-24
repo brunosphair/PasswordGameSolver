@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
 
 class Web:
     def __init__(self):
@@ -9,10 +10,25 @@ class Web:
         self.driver.get('https://neal.fun/password-game/')
 
     def type_password_in_index(self, value, index,replace=False):
+        text_box_element = self.driver.find_element(By.CLASS_NAME, 'ProseMirror')
         if index == -1:
-            self.driver.find_element(By.CLASS_NAME, 'ProseMirror').send_keys(value)
+            text_box_element.send_keys(value)
         elif not replace:
-            #TODO: escrever código para situações onde o index não é -1, situações com replace e sem replace
+            text_box_element.send_keys(Keys.CONTROL + Keys.HOME)
+            for i in range(index):
+                text_box_element.send_keys(Keys.ARROW_RIGHT)
+            text_box_element.send_keys(value)
+        elif replace:
+            text_box_element.send_keys(Keys.CONTROL + Keys.HOME)
+            for i in range(index):
+                text_box_element.send_keys(Keys.ARROW_RIGHT)
+            value_len = len(value)
+            if value_len > 0:
+                for character_index in range(value_len):
+                    text_box_element.send_keys(Keys.DELETE)
+                    text_box_element.send_keys(value[character_index])
+            else:
+                text_box_element.send_keys(Keys.DELETE)
 
     def get_rule_to_be_solved(self):
         rule_class = 'rule-top'

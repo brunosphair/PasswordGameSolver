@@ -190,7 +190,10 @@ class Password:
 
     def replace_string(self, original, replacer, index):
         result = list(original)
-        result[index:index + len(replacer)] = replacer
+        if replacer is not '':
+            result[index:index + len(replacer)] = replacer
+        else:
+            result[index] = replacer
         
         return ''.join(result)
     
